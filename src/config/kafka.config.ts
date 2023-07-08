@@ -1,4 +1,6 @@
 import { Kafka, SASLOptions } from "kafkajs";
+import dotenv from "dotenv";
+dotenv.config();
 
 const { KAFKA_BOOSTRAP_SERVER, KAFKA_CLIENT_ID, KAFKA_API_KEY: username, KAFKA_SECRET_KEY: password } = process.env;
 const sasl = username && password ? { username, password, mechanism: 'plain' } : null
