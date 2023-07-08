@@ -1,13 +1,13 @@
 import { Kafka, SASLOptions } from "kafkajs";
 
-const { KAFKA_DEFAULT_BROKER, KAFKA_CLIENT_ID, KAFKA_API_KEY: username, KAFKA_SECRET_KEY: password } = process.env;
+const { KAFKA_BOOSTRAP_SERVER, KAFKA_CLIENT_ID, KAFKA_API_KEY: username, KAFKA_SECRET_KEY: password } = process.env;
 const sasl = username && password ? { username, password, mechanism: 'plain' } : null
 const ssl = !!sasl
 
 
 const kafka = new Kafka({
     clientId: KAFKA_CLIENT_ID,
-    brokers: [String(KAFKA_DEFAULT_BROKER)],
+    brokers: [String(KAFKA_BOOSTRAP_SERVER)],
     ssl,
     sasl: String(sasl) as unknown as SASLOptions,
 });
