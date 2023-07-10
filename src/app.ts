@@ -1,6 +1,10 @@
 import express, { Request, Response } from 'express';
+import routes from './routes/index.route';
 
 const app = express();
+
+//mount route
+app.use('/api/v1', routes)
 
 // index route
 app.get('/', (req, res) => {
