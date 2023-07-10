@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-export default class MailServices {
+export default class MailService {
     
    async sendMail(data) {
         // axios post to xml api
@@ -26,6 +26,7 @@ export default class MailServices {
         console.log(response);
     }, (error) => {
         console.log(error);
-    });
+    }
+);
  }
 }
