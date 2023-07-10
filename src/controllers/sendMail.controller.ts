@@ -3,6 +3,7 @@ import MailService from '../services/mail.services';
 
 export default class SendMailController {
     private mailService: MailService;
+    
     constructor() {
         this.mailService = new MailService();
     }
