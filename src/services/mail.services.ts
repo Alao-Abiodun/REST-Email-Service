@@ -1,4 +1,3 @@
-import axios from 'axios';
 import soapRequest from 'easy-soap-request';
 import { XMLParser } from "fast-xml-parser";
 const parser = new XMLParser();
