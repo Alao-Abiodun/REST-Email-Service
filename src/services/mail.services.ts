@@ -1,7 +1,8 @@
-import axios from 'axios';
 import soapRequest from 'easy-soap-request';
-import parser from 'fast-xml-parser';
+import { XMLParser } from "fast-xml-parser";
+const parser = new XMLParser();
 import dotenv from 'dotenv';
+dotenv.config();
 
 const { ACTIVE_DIRECTORY_URL, HOST, SOAP_ACTION } = process.env;
 
@@ -34,27 +35,15 @@ export default class MailService {
         const { response } = await soapRequest({ url, headers, xml });
 
             // convert to json
-            let result = convertXml(response.body);
+            let result = parser.parse(response.body);
             // format to get xml in order to get object
             result = reformatXml(result.Envelope.Body.GetInfoResponse.GetInfoResult);
             // get object
-            result = convertXml(result);
+            result = parser.parse(result);
         
             return result.root.record;
  }
 }
-
-const convertXml = (res: string): any => {
-    const options = {
-        attributeNamePrefix: '',
-        attrNodeName: 'attr',
-        ignoreNameSpace: true,
-        ignoreAttributes: false,
-    };
-
-    // const tObj = parser.getTraversalObj(res, options);
-    // return parser.convertToJson(tObj, options);
-};
 
 const reformatXml = (char: string) => {
     const newChar = char.replace(/&lt;/gi, `<`);
