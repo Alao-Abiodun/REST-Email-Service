@@ -1,6 +1,9 @@
 import axios from 'axios';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const { STERLING_MAIL, ACTIVE_DIRECTORY_URL } = process.env;
+
+const { STERLING_MAIL } = process.env;
 
 export interface EmailOptions {
     sourceEmail: string;
@@ -11,7 +14,7 @@ export interface EmailOptions {
 
 export const sendEmail = async (options: EmailOptions): Promise<void> => {
     try {
-        await axios.post(String(ACTIVE_DIRECTORY_URL), options);
+        await axios.post(String(STERLING_MAIL), options);
     } catch (err) {
         throw new Error(err);
     }
