@@ -1,6 +1,8 @@
 import { mailService } from '../services/mail.services';
 import { producer } from '../config/kafka.config';
 import  { Request, Response } from 'express';
+import dotenv from 'dotenv';
+dotenv.config();
 
 
 export const sendMail = async (req: Request, res: Response) => {
