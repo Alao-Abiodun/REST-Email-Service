@@ -3,6 +3,9 @@ import routes from './routes/index.route';
 
 const app = express();
 
+// leverage the access to get the json value
+app.use(express.json());
+
 //mount route
 app.use('/api/v1', routes)
 

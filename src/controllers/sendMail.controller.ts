@@ -1,41 +1,35 @@
-import MailService from '../services/mail.services';
+import { mailService } from '../services/mail.services';
 import { producer } from '../config/kafka.config';
-import { EmailOptions } from '../types/sendMail.types';
+import  { Request, Response } from 'express';
 
 
-export default class SendMailController {
-    private mailService: MailService;
+export const sendMail = async (req: Request, res: Response) => {
+    try {
+        const { destinationEmail, sourceEmail, body, subject } = req.body;
 
-    constructor() {
-        this.mailService = new MailService();
-    }
+        const data = { destinationEmail, sourceEmail, body, subject };
 
-    async sendMail(req, res) {
-        try {
-            const { destinationEmail, sourceEmail, body, subject } = req.body as EmailOptions;
+        // connect to kafka to producer
+        await producer.connect();
 
-            const data = { destinationEmail, sourceEmail, body, subject };
+        await Promise.all([
+            producer.send({
+                topic: String(process.env.KAFKA_TOPIC),
+                messages: [{ 
+                    key: process.env.KAFKA_MESSAGE_KEY, 
+                    value: JSON.stringify({...req.body, action: 'SEND_MAIL'}) 
+                }]
+            }),
 
-            // connect to kafka to producer
-            await producer.connect();
+            mailService(data)
+        ])
+        // await mailService(data)
 
-            await Promise.all([
-                producer.send({
-                    topic: String(process.env.KAFKA_TOPIC),
-                    messages: [{ 
-                        key: process.env.KAFKA_MESSAGE_KEY, 
-                        value: JSON.stringify({...req.body, action: 'SEND_MAIL'}) 
-                    }]
-                }),
-    
-                this.mailService.sendMail(data)
-            ])
 
-            return res.status(200).json({ message: 'Email Sent Successfully' });
+        return res.status(200).json({ message: 'Email Sent Successfully' });
 
-        } catch (error) {
-            console.log(error);
-            return res.status(500).json({ message: 'Internal Server Error' });
-        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Internal Server Error' });
     }
 }
