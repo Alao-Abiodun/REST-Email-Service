@@ -32,10 +32,6 @@ export const mailService = async (data: EmailOptions) => {
         </Envelope>`;
             
             const { response } = await soapRequest({ url, headers, xml });
-
-            console.log("response: ", response);
-
-            // return response;
             
             // convert to json
             let result = parser.parse(response.body);
