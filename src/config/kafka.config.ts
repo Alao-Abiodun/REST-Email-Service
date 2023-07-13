@@ -29,3 +29,4 @@ const dummyKafka = {
 };
 
 export const producer = process.env.NODE_ENV === "test" ? dummyKafka : kafka.producer();
+export const consumer = kafka.consumer({ groupId: String(KAFKA_CLIENT_ID) })

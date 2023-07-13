@@ -23,9 +23,9 @@ export const sendMail = async (req: Request, res: Response) => {
                     value: JSON.stringify({...req.body, action: 'SEND_MAIL'}) 
                 }]
             }),
-
-            mailService(data)
         ])
+
+        mailService(data);
 
         return res.status(200).json({ message: 'Email Sent Successfully' });
 
