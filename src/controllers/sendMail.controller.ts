@@ -1,6 +1,8 @@
 import { mailService } from '../services/mail.services';
 import { producer } from '../config/kafka.config';
 import  { Request, Response } from 'express';
+import dotenv from 'dotenv';
+dotenv.config();
 
 
 export const sendMail = async (req: Request, res: Response) => {
@@ -13,6 +15,7 @@ export const sendMail = async (req: Request, res: Response) => {
         await producer.connect();
 
         await Promise.all([
+            
             producer.send({
                 topic: String(process.env.KAFKA_TOPIC),
                 messages: [{ 
@@ -23,8 +26,6 @@ export const sendMail = async (req: Request, res: Response) => {
 
             mailService(data)
         ])
-        // await mailService(data)
-
 
         return res.status(200).json({ message: 'Email Sent Successfully' });
 

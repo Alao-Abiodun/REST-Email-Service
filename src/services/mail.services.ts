@@ -7,7 +7,7 @@ dotenv.config();
 import { EmailOptions } from '../types/sendMail.types';
 
 
-const { ACTIVE_DIRECTORY_URL, HOST, SOAP_ACTION } = process.env;
+const { ACTIVE_DIRECTORY_URL } = process.env;
 
 
 export const mailService = async (data: EmailOptions) => {
@@ -32,10 +32,6 @@ export const mailService = async (data: EmailOptions) => {
         </Envelope>`;
             
             const { response } = await soapRequest({ url, headers, xml });
-
-            console.log("response: ", response);
-
-            // return response;
             
             // convert to json
             let result = parser.parse(response.body);
@@ -56,8 +52,3 @@ const reformatXml = (char: string) => {
 
     return latChar;
 };
-
-
-// https://t24-ewsserviceproxy.sterlingapps.p.azurewebsites.net/Service.asmx
-
-//https://graphical.weather.gov/xml/DWMLgen/wsdl/ndfdXML.wsdl#LatLonListZipCode

@@ -10,8 +10,6 @@ const ssl = !!sasl
 const kafka = new Kafka({
     clientId: String(KAFKA_CLIENT_ID),
     brokers: [String(KAFKA_BOOSTRAP_SERVER)],
-    ssl,
-    sasl: String(sasl) as unknown as SASLOptions,
 });
 
 const dummyKafka = {
