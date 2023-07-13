@@ -6,7 +6,6 @@ dotenv.config();
 
 import { EmailOptions } from '../types/sendMail.types';
 
-
 const { ACTIVE_DIRECTORY_URL } = process.env;
 
 
@@ -31,7 +30,7 @@ export const mailService = async (data: EmailOptions) => {
             </Body>
         </Envelope>`;
             
-            const { response } = await soapRequest({ url, headers, xml });
+        const { response } = await soapRequest({ url, headers, xml });
             
             // convert to json
             let result = parser.parse(response.body);
@@ -39,10 +38,12 @@ export const mailService = async (data: EmailOptions) => {
             result = reformatXml(result.Envelope.Body.GetInfoResponse.GetInfoResult);
             // get object
             result = parser.parse(result);
-                    
+            
+            console.log("result: ", result);
+            
             return result.root.record;
     } catch (error) {
-        
+        console.log(error);
     }
 }
 
