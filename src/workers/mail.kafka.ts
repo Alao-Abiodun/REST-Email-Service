@@ -5,6 +5,7 @@ dotenv.config();
 
 export default {
     async start() {
+        // consume the message
         await consumer.connect();
         await consumer.subscribe({ topic: String(process.env.KAFKA_TOPIC) });
 
